@@ -43,7 +43,7 @@ def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
         with open(output_file, 'w') as cleaned:
            # speaker_codes = {"F634", "F631", "f634", "f631"}
-            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uh huh"}
+            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um", "ehm", "huh", "er"}
             new_line_trigger = {"and", "but", "so"}
             for line in original:
                 tokens = word_tokenize(line)
@@ -70,5 +70,12 @@ def clean_file(input_file, output_file):
 
 # # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')
-    clean_file('SC349_Human_Original.txt','SC349_Human_Cleaned.txt')
+    #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')
+    clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
+    clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
+    clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
+
+    clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
+    clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
+    clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
+    #clean_file("SC1521_Human_Original.txt","SC1521_Human_Cleaned.txt")
