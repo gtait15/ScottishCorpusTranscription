@@ -43,8 +43,8 @@ def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
         with open(output_file, 'w') as cleaned:
            # speaker_codes = {"F634", "F631", "f634", "f631"}
-            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um", "ehm", "huh", "er"}
-            new_line_trigger = {"and", "but", "so"}
+            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um", "ehm", "huh", "er", "f1071", "m1070", "f718", "f1077", "m1078"}
+            new_line_trigger = {"and", "but", "so", "no", "yeah", "yes"}
             for line in original:
                 tokens = word_tokenize(line)
                 in_brackets = 0
@@ -52,6 +52,7 @@ def clean_file(input_file, output_file):
                     token = token.lower()
                     token = replace_written_numbers(token)
                     token = token.replace("-"," ")
+                    token = token.replace("/", "")
                     #token = token.replace("ing", "in") #chaotic neutral way to fix
                     if token == "[":
                          in_brackets = 1
