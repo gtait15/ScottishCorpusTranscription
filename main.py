@@ -39,37 +39,43 @@ def replace_written_numbers(text):
         return written_numbers[text]
     return text
 
+def clean_up(text):
+    text = text.lower()
+    text = text.replace_written_numbers(text)
+    text = text.replace("/", "")
+    text = text.replace(".", "")
+    # token = token.replace("ing", "in") #chaotic way to fix
+    return text
+
 def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
         with open(output_file, 'w') as cleaned:
-           # speaker_codes = {"F634", "F631", "f634", "f631"}
-            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um", "ehm", "huh", "er", "f1071", "m1070", "f718", "f1077", "m1078"}
+            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um",
+                          "ehm", "huh", "er", "f1071", "m1070", "f718", "f1077", "m1078"}
             new_line_trigger = {"and", "but", "so", "no", "yeah", "yes"}
+            contraction_endings = {"'nt", "'ll", "'d", "'ve", "'t","'t've","'s","'n","'d", "'re",
+                            "'all", "'mon", "n't", "'m"} #nltk inconsistent about tokenizing these for some reason
+            contractions = {"didn't", "o'clock", "don't", "i'm", "can't", "isn't", "that's", "you've"}
             for line in original:
                 tokens = word_tokenize(line)
                 in_brackets = 0
                 for token in tokens:
-                    token = token.lower()
-                    token = replace_written_numbers(token)
-                    token = token.replace("-"," ")
-                    token = token.replace("/", "")
-                    #token = token.replace("ing", "in") #chaotic neutral way to fix
+                    token = clean_up(token)
                     if token == "[":
                          in_brackets = 1
                     elif token == "]":
                          in_brackets = 0
-                    if not in_brackets and token not in black_list and token.replace("'","").isalnum():
-                        if token in new_line_trigger: #or token in speaker_codes:
+                    if not (token.replace("'", "").isalnum() or token.replace("-", "").isalnum()):
+                        print(token)
+                    if not in_brackets and token not in black_list and (token.replace("'","").isalnum() or token.replace("-", "").isalnum()):
+                        if token in new_line_trigger:
                              cleaned.write('\n')
-                        if token.find('\'') < 0: # add space if not contraction
-                            cleaned.write(" ")
+                        if token not in contraction_endings:
+                            cleaned.write(" ")                           #add space if not contraction
+                            if token not in contractions:
+                                token = token.replace("'","")   #human transcription uses "'" for quotes and nltk gets confused
                         cleaned.write(token)
 
-                       # if token in speaker_codes:
-                            # cleaned.write('\n')
-
-
-# # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')
     clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
@@ -79,4 +85,3 @@ if __name__ == '__main__':
     clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
     clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
     clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
-    #clean_file("SC1521_Human_Original.txt","SC1521_Human_Cleaned.txt")
