@@ -69,7 +69,7 @@ def clean_file(input_file, output_file):
             #because nltk is inconsistent about tokenizing them for some reason
             contraction_endings = {"'nt", "'ll", "'d", "'ve", "'t","'t've","'s","'n","'d", "'re",
                             "'all", "'mon", "n't", "'m"}
-            contractions = {"didn't", "o'clock", "don't", "i'm", "can't", "isn't", "that's", "you've", "mummy's"}
+            contraction_words = {"didn't", "o'clock", "don't", "i'm", "can't", "isn't", "that's", "you've", "mummy's"}
 
             #go through each line, separate tokens, remove punctuation and add to new file
             for line in original:
@@ -95,14 +95,14 @@ def clean_file(input_file, output_file):
                             #add space only if token is not a contraction
                             cleaned.write(" ")
                             #cut out "'" used for quotes while keeping genuine contractions
-                            if token not in contractions:
+                            if token not in contraction_words:
                                 token = token.replace("'","")
 
                         #finally write token to file
                         cleaned.write(token)
 
 if __name__ == '__main__':
-    #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')
+    #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')  #accidentally done with US English transcription
     clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
     clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
     clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
