@@ -8,7 +8,7 @@ def clean_up(text):
     text = text.replace(".", "")
     #token = token.replace("ing", "in") #chaotic way to fix
 
-    #doesn't include every number but it's enough to make human error checking  a little easier at least
+    #doesn't include every number but it's enough to make human error checking a little easier at least
     written_numbers = {
         "one": "1",
         "two": "2",
@@ -74,23 +74,31 @@ def clean_file(input_file, output_file):
             #go through each line, separate tokens, remove punctuation and add to new file
             for line in original:
                 tokens = word_tokenize(line)
+
                 in_brackets = 0
                 for token in tokens:
                     token = clean_up(token)
+
                     #human transcriptions have "[inhale]", "[laugh]" etc. which we want to cut out
                     if token == "[":
                          in_brackets = 1
                     elif token == "]":
                          in_brackets = 0
+
                     if not in_brackets and token not in black_list and token_not_punctuation(token):
+                        #add line breaks
                         if token in new_line_trigger:
                              cleaned.write('\n')
+
+                        #deal with possible contractions and spaces
                         if token not in contraction_endings:
-                            # add space only if token is not a contraction
+                            #add space only if token is not a contraction
                             cleaned.write(" ")
-                            #human transcription uses "'" for quotes which we want to take out
+                            #cut out "'" used for quotes while keeping genuine contractions
                             if token not in contractions:
                                 token = token.replace("'","")
+
+                        #finally write token to file
                         cleaned.write(token)
 
 if __name__ == '__main__':
