@@ -1,10 +1,14 @@
 from nltk import word_tokenize
 
+#makes text lowercase, removes "/" and ".", and converts most written numbers to numerals,
+#e.g., "sixty" -> "60"
 def clean_up(text):
     text = text.lower()
     text = text.replace("/", "")
     text = text.replace(".", "")
     #token = token.replace("ing", "in") #chaotic way to fix
+
+    #doesn't include every number but it's enough to make human error checking  a little easier at least
     written_numbers = {
         "one": "1",
         "two": "2",
@@ -53,17 +57,27 @@ def token_not_punctuation(text):
 def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
         with open(output_file, 'w') as cleaned:
-            black_list = {"f634", "f631", "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um",
-                          "ehm", "huh", "er", "f1071", "m1070", "f718", "f1077", "m1078", "uh-huh", "hm"}
+            #create a blacklist of SC speaker codes and disfluencies that CoP usually doesn't transcribe
+            black_list = {"f634", "f631", "f1071", "m1070", "f718", "f1077", "m1078",
+                          "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um",
+                          "ehm", "huh", "er",  "uh-huh", "hm"}
+
+            #create a set of new line triggers because CoP spits out really long lines that need to be broken up
             new_line_trigger = {"and", "but", "so", "no", "yeah", "yes", "oh", "well"}
+
+            #need to deal with contractions in two separate ways
+            #because nltk is inconsistent about tokenizing them for some reason
             contraction_endings = {"'nt", "'ll", "'d", "'ve", "'t","'t've","'s","'n","'d", "'re",
-                            "'all", "'mon", "n't", "'m"} #nltk inconsistent about tokenizing these for some reason
-            contractions = {"didn't", "o'clock", "don't", "i'm", "can't", "isn't", "that's", "you've"}
+                            "'all", "'mon", "n't", "'m"}
+            contractions = {"didn't", "o'clock", "don't", "i'm", "can't", "isn't", "that's", "you've", "mummy's"}
+
+            #go through each line, separate tokens, remove punctuation and add to new file
             for line in original:
                 tokens = word_tokenize(line)
                 in_brackets = 0
                 for token in tokens:
                     token = clean_up(token)
+                    #human transcriptions have "[inhale]", "[laugh]" etc. which we want to cut out
                     if token == "[":
                          in_brackets = 1
                     elif token == "]":
@@ -72,9 +86,11 @@ def clean_file(input_file, output_file):
                         if token in new_line_trigger:
                              cleaned.write('\n')
                         if token not in contraction_endings:
-                            cleaned.write(" ")                           #add space if not contraction
+                            # add space only if token is not a contraction
+                            cleaned.write(" ")
+                            #human transcription uses "'" for quotes which we want to take out
                             if token not in contractions:
-                                token = token.replace("'","")   #human transcription uses "'" for quotes and nltk gets confused
+                                token = token.replace("'","")
                         cleaned.write(token)
 
 if __name__ == '__main__':
