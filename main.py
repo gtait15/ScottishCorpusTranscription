@@ -38,7 +38,7 @@ def clean_up(text):
         "forty-six": "46",
         "forty-seven": "47",
         "fifty": "50",
-        "fifty-one": "50",
+        "fifty-one": "51",
         "sixty": "60",
         "sixty-nine" : "69",
         "seventy": "70",
@@ -63,7 +63,7 @@ def clean_file(input_file, output_file):
                           "ehm", "huh", "er",  "uh-huh", "hm"}
 
             #create a set of new line triggers because CoP spits out really long lines that need to be broken up
-            new_line_trigger = {"and", "but", "so", "no", "yeah", "yes", "oh", "well"}
+            new_line_triggers = {"and", "but", "so", "no", "yeah", "yes", "oh", "well"}
 
             #need to deal with contractions in two separate ways
             #because nltk is inconsistent about tokenizing them for some reason
@@ -74,7 +74,6 @@ def clean_file(input_file, output_file):
             #go through each line, separate tokens, remove punctuation and add to new file
             for line in original:
                 tokens = word_tokenize(line)
-
                 in_brackets = 0
                 for token in tokens:
                     token = clean_up(token)
@@ -87,10 +86,10 @@ def clean_file(input_file, output_file):
 
                     if not in_brackets and token not in black_list and token_not_punctuation(token):
                         #add line breaks
-                        if token in new_line_trigger:
+                        if token in new_line_triggers:
                              cleaned.write('\n')
 
-                        #deal with possible contractions and spaces
+                        #deal with possible contractions and add spaces
                         if token not in contraction_endings:
                             #add space only if token is not a contraction
                             cleaned.write(" ")
