@@ -52,7 +52,7 @@ def clean_up(text):
     return text
 
 def token_not_punctuation(text):
-   return text.isalnum() or text.replace("'","").isalnum() or text.replace("-", "").isalnum()
+   return text.isalnum() or text.replace("'","").isalnum() or text.replace("-", "").isalnum() or text.replace("*", "a").isalnum()
 
 def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
