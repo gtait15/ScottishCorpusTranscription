@@ -58,7 +58,7 @@ def clean_file(input_file, output_file):
     with open(input_file, 'r') as original:
         with open(output_file, 'w') as cleaned:
             #create a blacklist of SC speaker codes and disfluencies that CoP usually doesn't transcribe
-            black_list = {"f634", "f631", "f1071", "m1070", "f718", "f1077", "m1078",
+            black_list = {"f634", "f631", "f1071", "m1070", "f718", "f1077", "m1078", "f718", "m734",
                           "mm", "mmhm", "em", "erm", "eh", "uh", "uhhuh", "um",
                           "ehm", "huh", "er",  "uh-huh", "hm"}
 
@@ -102,10 +102,12 @@ def clean_file(input_file, output_file):
 
 if __name__ == '__main__':
     #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')  #accidentally done with US English transcription
-    clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
-    clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
+    #clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
+    #clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
     clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
+    clean_file("SC579_CoP_Original.txt", "SC579_CoP_Cleaned.txt")
 
-    clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
-    clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
+    #clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
+    #clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
     clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
+    clean_file('SC579_Human_Original.txt', 'SC579_Human_Cleaned.txt')
