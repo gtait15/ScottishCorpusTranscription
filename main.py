@@ -63,7 +63,13 @@ def clean_file(input_file, output_file):
                           "ehm", "huh", "er",  "uh-huh", "hm"}
 
             #create a set of new line triggers because CoP spits out really long lines that need to be broken up
-            new_line_triggers = {"and", "but", "so", "no", "yeah", "yes", "oh", "well"}
+            #new_line_triggers = {"and", "but", "so", "no", "yeah", "yes", "oh", "well"}
+
+            #needed more line breaks for 1485 because CoP had too much trouble with it and comparison is hard
+            new_line_triggers = {"and", "but", "so", "no", "yeah", "yes", "oh", "well",
+                                 "squirrel", "i", "what", "who", "did", "will", "does", "which"}
+
+
 
             #need to deal with contractions in two separate ways
             #because nltk is inconsistent about tokenizing them for some reason
@@ -103,11 +109,11 @@ def clean_file(input_file, output_file):
 if __name__ == '__main__':
     #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')  #accidentally done with US English transcription
     #clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
-    #clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
-    clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
-    clean_file("SC579_CoP_Original.txt", "SC579_CoP_Cleaned.txt")
+    clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
+    #clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
+    #clean_file("SC579_CoP_Original.txt", "SC579_CoP_Cleaned.txt")
 
     #clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
-    #clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
-    clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
-    clean_file('SC579_Human_Original.txt', 'SC579_Human_Cleaned.txt')
+    clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
+    #clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
+    #clean_file('SC579_Human_Original.txt', 'SC579_Human_Cleaned.txt')
