@@ -105,15 +105,37 @@ def clean_file(input_file, output_file):
 
                         #finally write token to file
                         cleaned.write(token)
+def word_count(input_file, speaker_to_keep, speaker_to_remove):
+    with open(input_file, 'r') as file:
+        num_words = 0
+        is_speaking = 0
+        for line in file:
+            words = word_tokenize(line)
+            for word in words:
+                if word == speaker_to_keep:
+                    is_speaking = 1
+                elif word == speaker_to_remove:
+                    is_speaking = 0
+                elif is_speaking:
+                    num_words += 1
+                    print(word)
+        print(input_file, " word count: ", num_words)
+
 
 if __name__ == '__main__':
     #clean_file('SC349_CoP_Original.txt','SC349_CoP_Cleaned.txt')  #accidentally done with US English transcription
     #clean_file('SC349_CoP_Original2.txt','SC349_CoP_Cleaned2.txt')
-    clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
+    #clean_file("SC1485_CoP_Original.txt", "SC1485_CoP_Cleaned.txt")
     #clean_file("SC1521_CoP_Original.txt", "SC1521_CoP_Cleaned.txt")
     #clean_file("SC579_CoP_Original.txt", "SC579_CoP_Cleaned.txt")
 
     #clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned.txt')
-    clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
+
+    #clean_file('SC1485_Human_Original.txt', 'SC1485_Human_Cleaned.txt')
     #clean_file('SC1521_Human_Original.txt', 'SC1521_Human_Cleaned.txt')
     #clean_file('SC579_Human_Original.txt', 'SC579_Human_Cleaned.txt')
+
+    #clean_file('SC579_Human_Original.txt', 'SC579_Human_Cleaned_SpC.txt')
+    #clean_file('SC349_Human_Original.txt', 'SC349_Human_Cleaned_SpC.txt')
+    word_count('SC349_Human_Cleaned_SpC.txt', 'f634', 'f631')
+    word_count('SC579_Human_Cleaned_SpC.txt', 'm734', 'f718')
